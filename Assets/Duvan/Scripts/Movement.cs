@@ -9,7 +9,6 @@ public class Movement : MonoBehaviour
     private Collision coll;
     [HideInInspector]
     public Rigidbody2D rb;
-    private AnimationScript anim;
 
     [Space]
     [Header("Stats")]
@@ -51,7 +50,6 @@ public class Movement : MonoBehaviour
     {
         coll = GetComponent<Collision>();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<AnimationScript>();
     }
 
     // Update is called once per frame
@@ -64,12 +62,10 @@ public class Movement : MonoBehaviour
         Vector2 dir = new Vector2(x, y);
 
         Walk(dir);
-        anim.SetHorizontalMovement(x, y, rb.velocity.y);
 
         if (coll.onWall && Input.GetButton("Fire3") && canMove)
         {
             if (side != coll.wallSide)
-                anim.Flip(side * -1);
             wallGrab = true;
             wallSlide = false;
         }
@@ -115,7 +111,6 @@ public class Movement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            anim.SetTrigger("jump");
 
             if (coll.onGround)
                 Jump(Vector2.up, false);
@@ -148,12 +143,10 @@ public class Movement : MonoBehaviour
         if (x > 0)
         {
             side = 1;
-            anim.Flip(side);
         }
         if (x < 0)
         {
             side = -1;
-            anim.Flip(side);
         }
 
 
@@ -164,7 +157,7 @@ public class Movement : MonoBehaviour
         hasDashed = false;
         isDashing = false;
 
-        side = anim.sr.flipX ? -1 : 1;
+      
 
         jumpParticle.Play();
     }
@@ -177,7 +170,7 @@ public class Movement : MonoBehaviour
 
         hasDashed = true;
 
-        anim.SetTrigger("dash");
+        
 
         rb.velocity = Vector2.zero;
         Vector2 dir = new Vector2(x, y);
@@ -219,7 +212,6 @@ public class Movement : MonoBehaviour
         if ((side == 1 && coll.onRightWall) || side == -1 && !coll.onRightWall)
         {
             side *= -1;
-            anim.Flip(side);
         }
 
         StopCoroutine(DisableMovement(0));
@@ -235,7 +227,6 @@ public class Movement : MonoBehaviour
     private void WallSlide()
     {
         if (coll.wallSide != side)
-            anim.Flip(side * -1);
 
         if (!canMove)
             return;
