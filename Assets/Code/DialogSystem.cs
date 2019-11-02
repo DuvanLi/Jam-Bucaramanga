@@ -4,20 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public delegate void Finish();
 
 public class DialogSystem : MonoBehaviour
 {
-    private Finish _finish;
+    public Finish finish;
     [SerializeField] private TMP_Text text;
-    [SerializeField] Dialog dialogs;
-    private Dialog _currDialog;
+    [SerializeField] private TMP_Text OptionA;
+    [SerializeField] private TMP_Text OptionX;
+    [SerializeField] private TMP_Text OptionY;
+    [SerializeField] private TMP_Text OptionB;
+    [SerializeField] private List<Conversation> conversations;
     private bool _currDialogFinish;
     private bool _textHasOption;
 
 
-    private void Start()
+    /*private void Start()
     {
         _finish += Finish;
         NextDialog(dialogs);
@@ -69,11 +73,11 @@ public class DialogSystem : MonoBehaviour
         }
 
         DisplayDialog(nextDialogName.text);
-    }
+    }*/
 
     private void DisplayDialog(string dialog)
     {
-        StartCoroutine(Type(dialog, 0.7f));
+        StartCoroutine(Type(dialog, 0.2f));
     }
 
     private IEnumerator Type(string dialog, float typeSpeed)
@@ -84,6 +88,6 @@ public class DialogSystem : MonoBehaviour
             text.text += letter;
         }
 
-        _finish?.Invoke();
+        finish?.Invoke();
     }
 }
