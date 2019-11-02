@@ -8,10 +8,13 @@ public class movementController : MonoBehaviour
    [SerializeField]private float speed;
     private float horizontal;
     private bool facingRigh;
+    private Animator animator;
     private Rigidbody2D rb;
+    
    public void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -30,12 +33,12 @@ public class movementController : MonoBehaviour
 
         //rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,targetVelocity,1f), rb.velocity.y);*/
 
-        if(rb.velocity.x > 0 && facingRigh)
+        if(rb.velocity.x >= 0.1 && facingRigh)
             {
             flip();
             facingRigh = !facingRigh;
         }
-        if (rb.velocity.x < 0 && !facingRigh)
+        if (rb.velocity.x <= -0.1 && !facingRigh)
         {
             flip();
             facingRigh = !facingRigh;
@@ -45,12 +48,15 @@ public class movementController : MonoBehaviour
             case 0:
                 //rb.velocity = new Vector2((rb.velocity.x < 0) ? rb.velocity.x+Mathf.Abs(rb.velocity.x) :,rb.velocity.y)
                 rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, 5), rb.velocity.y);
+                animator.SetBool("isRuning", false);
                 break;
-            case 1:
+            case 1:                
                 rb.velocity = new Vector2(speed, rb.velocity.y);
+                animator.SetBool("isRuning", true);
                 break;
             case -1:
                 rb.velocity = new Vector2(speed*-1, rb.velocity.y);
+                animator.SetBool("isRuning", true);
                 break;
         }        
         
