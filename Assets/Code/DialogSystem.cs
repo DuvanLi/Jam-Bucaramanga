@@ -48,10 +48,7 @@ public class DialogSystem : MonoBehaviour
             }
 
             if (!_conversationFinish) return;
-            OptionA.OptionText.text = OptionA.conversation.question;
-            OptionB.OptionText.text = OptionB.conversation.question;
-            OptionX.OptionText.text = OptionX.conversation.question;
-            OptionY.OptionText.text = OptionY.conversation.question;
+          
 
             if (Input.GetButtonDown(OptionA.ButtonName))
             {
@@ -60,9 +57,8 @@ public class DialogSystem : MonoBehaviour
             }
             else if (Input.GetButtonDown(OptionB.ButtonName))
             {
-                InitConversation(OptionB.conversation);
-
                 _currDialogFinish = false;
+                gameObject.SetActive(false); 
             }
             else if (Input.GetButtonDown(OptionX.ButtonName))
             {
@@ -82,12 +78,9 @@ public class DialogSystem : MonoBehaviour
 
     private void ConversationEnd()
     {
-
-        _wait = true;
         StartCoroutine(Wait());
-        Debug.Log("Final");
-        _conversationFinish = true;
-        _currDialogFinish = true;
+        _currDialogFinish = false;
+
     }
 
     private void NextConversation()
@@ -118,7 +111,15 @@ public class DialogSystem : MonoBehaviour
 
     private IEnumerator Wait()
     {
+        _wait = true;
+        OptionA.OptionText.text = OptionA.conversation.question;
+        OptionB.OptionText.text = OptionB.conversation.question;
+        OptionX.OptionText.text = OptionX.conversation.question;
+        OptionY.OptionText.text = OptionY.conversation.question;
         yield return new WaitForSeconds(3f);
+        _currDialogFinish = true;
+        _conversationFinish = true;
+
         _wait = false;
     }
     

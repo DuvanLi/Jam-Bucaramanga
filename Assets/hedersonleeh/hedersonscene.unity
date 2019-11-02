@@ -715,10 +715,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270800350}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1272154932}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -766,8 +767,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab40123cf0094e53949eb4a9f46b1ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  question: Te amo
+  question: Salir
   Dialog:
+  - name: 
+    text: yay
   - name: 
     text: Yo no prro :'v
 --- !u!114 &1270800356
@@ -814,6 +817,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   question: "\xBFQue pasa?"
   Dialog:
+  - name: 
+    text: mira
   - name: 
     text: Nada Mijo deje e joder
 --- !u!1 &1272154928
@@ -907,8 +912,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 481622285}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 1270800352}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1527,5 +1532,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
