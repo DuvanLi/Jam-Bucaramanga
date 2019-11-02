@@ -14,14 +14,15 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private TMP_Text text;
     [SerializeField] private Conversation firtsConversation;
     [SerializeField] private Option OptionA;
-    [SerializeField] private Option OptionB;
     [SerializeField] private Option OptionX;
     [SerializeField] private Option OptionY;
+    [SerializeField] private string ButtonExit;
     private Conversation _currConversation;
     private bool _currDialogFinish;
     private bool _conversationFinish;
     private bool _textHasOption;
     private bool _wait;
+    private bool once;
 
 
     private void Start()
@@ -29,7 +30,6 @@ public class DialogSystem : MonoBehaviour
         finish += ConversationEnd;
         InitConversation(firtsConversation);
         OptionA.OptionText.text = "";
-        OptionB.OptionText.text = "";
         OptionX.OptionText.text = "";
         OptionY.OptionText.text = "";
     }
@@ -40,7 +40,7 @@ public class DialogSystem : MonoBehaviour
         {
             if (_currDialogFinish && !_conversationFinish)
             {
-                if (Input.GetButtonDown("Button_A"))
+                if (Input.GetButtonDown(OptionA.ButtonName))
                 {
                     NextConversation();
                     _currDialogFinish = false;
@@ -49,7 +49,6 @@ public class DialogSystem : MonoBehaviour
 
             if (!_conversationFinish) return;
             OptionA.OptionText.text = OptionA.conversation.question;
-            OptionB.OptionText.text = OptionB.conversation.question;
             OptionX.OptionText.text = OptionX.conversation.question;
             OptionY.OptionText.text = OptionY.conversation.question;
 
@@ -58,11 +57,10 @@ public class DialogSystem : MonoBehaviour
                 InitConversation(OptionA.conversation);
                 _currDialogFinish = false;
             }
-            else if (Input.GetButtonDown(OptionB.ButtonName))
+            else if (Input.GetButtonDown(ButtonExit))
             {
-                InitConversation(OptionB.conversation);
-
                 _currDialogFinish = false;
+                gameObject.SetActive(false);
             }
             else if (Input.GetButtonDown(OptionX.ButtonName))
             {
@@ -77,12 +75,10 @@ public class DialogSystem : MonoBehaviour
                 _currDialogFinish = false;
             }
         }
-      
     }
 
     private void ConversationEnd()
     {
-
         _wait = true;
         StartCoroutine(Wait());
         Debug.Log("Final");
@@ -92,7 +88,6 @@ public class DialogSystem : MonoBehaviour
 
     private void NextConversation()
     {
-
         NextDialog(_currConversation.GetCurrentDialog());
         _currConversation.NextDialog();
     }
@@ -113,7 +108,7 @@ public class DialogSystem : MonoBehaviour
 
     private void DisplayDialog(string dialog)
     {
-        StartCoroutine(Type(dialog, 0.2f));
+        StartCoroutine(Type(dialog, 0.05f));
     }
 
     private IEnumerator Wait()
@@ -121,16 +116,21 @@ public class DialogSystem : MonoBehaviour
         yield return new WaitForSeconds(3f);
         _wait = false;
     }
-    
+
     private IEnumerator Type(string dialog, float typeSpeed)
     {
-        text.text = "";
-        foreach (var letter in dialog)
+        if (!once)
         {
-            yield return new WaitForSeconds(typeSpeed);
-            text.text += letter;
-        }
+            once = true;
+            text.text = "";
+            foreach (var letter in dialog)
+            {
+                yield return new WaitForSeconds(typeSpeed);
+                text.text += letter;
+            }
 
-        _currDialogFinish = true;
+            once = false;
+            _currDialogFinish = true;
+        }
     }
 }

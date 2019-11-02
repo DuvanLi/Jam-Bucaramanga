@@ -43,6 +43,8 @@
             <e p="WaypointSystem.cs" t="Include" />
           </e>
         </e>
+        <e p="InvntorySystem.cs" t="Include" />
+        <e p="movementController.cs" t="Include" />
         <e p="Simple Health Bar" t="Include">
           <e p="_Asteroids Example" t="Include">
             <e p="Scripts" t="Include">
