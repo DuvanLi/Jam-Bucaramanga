@@ -7,6 +7,7 @@ public class movementController : MonoBehaviour
     [SerializeField] private float jumpForce;
    [SerializeField]private float speed;
     private float horizontal;
+    private bool facingRigh;
     private Rigidbody2D rb;
    public void Start()
     {
@@ -29,7 +30,17 @@ public class movementController : MonoBehaviour
 
         //rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x,targetVelocity,1f), rb.velocity.y);*/
 
-        switch (horizontal)
+        if(rb.velocity.x > 0 && facingRigh)
+            {
+            flip();
+            facingRigh = !facingRigh;
+        }
+        if (rb.velocity.x < 0 && !facingRigh)
+        {
+            flip();
+            facingRigh = !facingRigh;
+        }
+            switch (horizontal)
         {
             case 0:
                 //rb.velocity = new Vector2((rb.velocity.x < 0) ? rb.velocity.x+Mathf.Abs(rb.velocity.x) :,rb.velocity.y)
@@ -43,7 +54,13 @@ public class movementController : MonoBehaviour
                 break;
         }        
         
+       void flip()
+        {
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
        
+        }
+
+
     }
         
 
