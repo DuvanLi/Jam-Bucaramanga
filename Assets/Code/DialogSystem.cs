@@ -12,69 +12,93 @@ public class DialogSystem : MonoBehaviour
 {
     public Finish finish;
     [SerializeField] private TMP_Text text;
-    [SerializeField] private TMP_Text OptionA;
-    [SerializeField] private TMP_Text OptionX;
-    [SerializeField] private TMP_Text OptionY;
-    [SerializeField] private TMP_Text OptionB;
+
     [SerializeField] private Conversation firtsConversation;
-    [SerializeField] private List<Conversation> conversations;
+    [SerializeField] private Option OptionA;
+    [SerializeField] private Option OptionB;
+    [SerializeField] private Option OptionX;
+    [SerializeField] private Option OptionY;
+    private Conversation _currConversation;
     private bool _currDialogFinish;
+    private bool _conversationFinish;
     private bool _textHasOption;
 
 
-    /*private void Start()
+    private void Start()
     {
-        _finish += Finish;
-        NextDialog(dialogs);
+        InitConversation(firtsConversation);
+        OptionA.OptionText.text = "";
+        OptionB.OptionText.text = "";
+        OptionX.OptionText.text = "";
+        OptionY.OptionText.text = "";
     }
 
     private void Update()
     {
-        if (_textHasOption)
+        if (_currDialogFinish && !_conversationFinish)
         {
-            foreach (var option in _currDialog.option)
+            if (Input.GetButtonDown("Jump"))
             {
-                if (option != null && Input.GetButton(option.ButtonName))
-                {
-                    NextDialog(option.dialog);
-                    _textHasOption = false;
-                }
+                NextConversation();
             }
-
-            return;
         }
 
-        if (_currDialogFinish && Input.GetButtonDown("Jump"))
+        if (!_conversationFinish) return;
+        OptionA.OptionText.text = OptionA.conversation.question;
+        OptionB.OptionText.text = OptionB.conversation.question;
+        OptionX.OptionText.text = OptionX.conversation.question;
+        OptionY.OptionText.text = OptionY.conversation.question;
+
+        if (Input.GetButtonDown(OptionA.ButtonName))
         {
-            text.text = "";
-            NextDialog(_currDialog.nextDialog);
+            InitConversation(OptionA.conversation);
+            _currDialogFinish = false;
+        }
+        else if (Input.GetButtonDown(OptionB.ButtonName))
+        {
+            InitConversation(OptionB.conversation);
+
+            _currDialogFinish = false;
+        }
+        else if (Input.GetButtonDown(OptionX.ButtonName))
+        {
+            InitConversation(OptionX.conversation);
+
+            _currDialogFinish = false;
+        }
+        else if (Input.GetButtonDown(OptionY.ButtonName))
+        {
+            InitConversation(OptionY.conversation);
+
             _currDialogFinish = false;
         }
     }
 
-
-    private void Finish()
+    private void NextConversation()
     {
-        if (_currDialog != null)
-            _currDialogFinish = true;
+        if (_currConversation.FinishConversation)
+        {
+            _conversationFinish = true;
+            return;
+        }
+
+        NextDialog(_currConversation.GetCurrentDialog());
+        _currConversation.NextDialog();
+    }
+
+    private void InitConversation(Conversation conversation)
+    {
+        if (conversation.GetCurrentDialog() == null) return;
+        NextDialog(conversation.GetCurrentDialog());
+        conversation.NextDialog();
+        _currConversation = conversation;
     }
 
     private void NextDialog(Dialog nextDialogName)
     {
-        if (nextDialogName == null)
-        {
-            Debug.Log("No More Dialog");
-            Finish();
-            return;
-        }
-        _currDialog = nextDialogName;
-        if (nextDialogName.option.Any())
-        {
-            _textHasOption = true;
-        }
-
-        DisplayDialog(nextDialogName.text);
-    }*/
+        if (nextDialogName != null)
+            DisplayDialog(nextDialogName.text);
+    }
 
     private void DisplayDialog(string dialog)
     {
@@ -83,12 +107,13 @@ public class DialogSystem : MonoBehaviour
 
     private IEnumerator Type(string dialog, float typeSpeed)
     {
+        text.text = "";
         foreach (var letter in dialog)
         {
             yield return new WaitForSeconds(typeSpeed);
             text.text += letter;
         }
 
-        finish?.Invoke();
+        _currDialogFinish = true;
     }
 }

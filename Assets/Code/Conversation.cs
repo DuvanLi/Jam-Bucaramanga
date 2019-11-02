@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class Conversation : MonoBehaviour
 {
-    [SerializeField] private string question;
+     public string question;
     [SerializeField]private Dialog[] Dialog;
     private int currDialogIndex = 0;
+    public bool FinishConversation { get; private set; }
+
     private void Start()
     {
        
@@ -25,7 +27,19 @@ public class Conversation : MonoBehaviour
 
     public Dialog GetCurrentDialog()
     {
-        return Dialog[currDialogIndex];
+        try
+        {
+            return Dialog[currDialogIndex];
+        }
+        catch (IndexOutOfRangeException e)
+        {
+            FinishConversation = true;
+            return null;
+        }
+    }
+    public string GetQuestion()
+    {
+        return question;
     }
     public Dialog GetCurrentDialog(int index)
     {
