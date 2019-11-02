@@ -34,6 +34,9 @@ public class Conversation : MonoBehaviour
         catch (IndexOutOfRangeException e)
         {
             FinishConversation = true;
+            FindObjectOfType<DialogSystem>().finish?.Invoke();;
+          
+
             return null;
         }
     }

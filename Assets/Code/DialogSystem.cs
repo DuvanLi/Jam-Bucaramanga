@@ -12,7 +12,6 @@ public class DialogSystem : MonoBehaviour
 {
     public Finish finish;
     [SerializeField] private TMP_Text text;
-
     [SerializeField] private Conversation firtsConversation;
     [SerializeField] private Option OptionA;
     [SerializeField] private Option OptionB;
@@ -22,10 +21,12 @@ public class DialogSystem : MonoBehaviour
     private bool _currDialogFinish;
     private bool _conversationFinish;
     private bool _textHasOption;
+    private bool _wait;
 
 
     private void Start()
     {
+        finish += ConversationEnd;
         InitConversation(firtsConversation);
         OptionA.OptionText.text = "";
         OptionB.OptionText.text = "";
@@ -35,52 +36,62 @@ public class DialogSystem : MonoBehaviour
 
     private void Update()
     {
-        if (_currDialogFinish && !_conversationFinish)
+        if (!_wait)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (_currDialogFinish && !_conversationFinish)
             {
-                NextConversation();
+                if (Input.GetButtonDown("Button_A"))
+                {
+                    NextConversation();
+                    _currDialogFinish = false;
+                }
+            }
+
+            if (!_conversationFinish) return;
+            OptionA.OptionText.text = OptionA.conversation.question;
+            OptionB.OptionText.text = OptionB.conversation.question;
+            OptionX.OptionText.text = OptionX.conversation.question;
+            OptionY.OptionText.text = OptionY.conversation.question;
+
+            if (Input.GetButtonDown(OptionA.ButtonName))
+            {
+                InitConversation(OptionA.conversation);
+                _currDialogFinish = false;
+            }
+            else if (Input.GetButtonDown(OptionB.ButtonName))
+            {
+                InitConversation(OptionB.conversation);
+
+                _currDialogFinish = false;
+            }
+            else if (Input.GetButtonDown(OptionX.ButtonName))
+            {
+                InitConversation(OptionX.conversation);
+
+                _currDialogFinish = false;
+            }
+            else if (Input.GetButtonDown(OptionY.ButtonName))
+            {
+                InitConversation(OptionY.conversation);
+
+                _currDialogFinish = false;
             }
         }
+      
+    }
 
-        if (!_conversationFinish) return;
-        OptionA.OptionText.text = OptionA.conversation.question;
-        OptionB.OptionText.text = OptionB.conversation.question;
-        OptionX.OptionText.text = OptionX.conversation.question;
-        OptionY.OptionText.text = OptionY.conversation.question;
+    private void ConversationEnd()
+    {
 
-        if (Input.GetButtonDown(OptionA.ButtonName))
-        {
-            InitConversation(OptionA.conversation);
-            _currDialogFinish = false;
-        }
-        else if (Input.GetButtonDown(OptionB.ButtonName))
-        {
-            InitConversation(OptionB.conversation);
-
-            _currDialogFinish = false;
-        }
-        else if (Input.GetButtonDown(OptionX.ButtonName))
-        {
-            InitConversation(OptionX.conversation);
-
-            _currDialogFinish = false;
-        }
-        else if (Input.GetButtonDown(OptionY.ButtonName))
-        {
-            InitConversation(OptionY.conversation);
-
-            _currDialogFinish = false;
-        }
+        _wait = true;
+        StartCoroutine(Wait());
+        Debug.Log("Final");
+        _conversationFinish = true;
+        _currDialogFinish = true;
     }
 
     private void NextConversation()
     {
-        if (_currConversation.FinishConversation)
-        {
-            _conversationFinish = true;
-            return;
-        }
 
         NextDialog(_currConversation.GetCurrentDialog());
         _currConversation.NextDialog();
@@ -105,6 +116,12 @@ public class DialogSystem : MonoBehaviour
         StartCoroutine(Type(dialog, 0.2f));
     }
 
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(3f);
+        _wait = false;
+    }
+    
     private IEnumerator Type(string dialog, float typeSpeed)
     {
         text.text = "";
