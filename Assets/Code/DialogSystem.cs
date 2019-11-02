@@ -16,6 +16,7 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private TMP_Text OptionX;
     [SerializeField] private TMP_Text OptionY;
     [SerializeField] private TMP_Text OptionB;
+    [SerializeField] private Conversation firtsConversation;
     [SerializeField] private List<Conversation> conversations;
     private bool _currDialogFinish;
     private bool _textHasOption;
