@@ -1,0 +1,43 @@
+[33mcommit b43aec0487327123e4b94478f3abf188978e62dd[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: hedersonleeh <hederson_3_12@hotmail.com>
+Date:   Sat Nov 2 02:05:40 2019 -0500
+
+    Revert "Revert "Inventory System Firts steps""
+
+[33mcommit c2dc52a54eabfa9b2bf2697a5365e6202964bea4[m
+Author: hedersonleeh <hederson_3_12@hotmail.com>
+Date:   Sat Nov 2 02:04:44 2019 -0500
+
+    Revert "Inventory System Firts steps"
+    
+    This reverts commit f4e3a4f3bcc0a31e88ad88239a84ba854beaf5a0.
+
+[33mcommit f4e3a4f3bcc0a31e88ad88239a84ba854beaf5a0[m
+Author: hedersonleeh <hedersoncarrasquero@gmail.com>
+Date:   Sat Nov 2 01:32:23 2019 -0500
+
+    Inventory System Firts steps
+
+[33mcommit eb16d74326ed320f5b11c3312247f9d7c696dc97[m
+Author: Duvan Lizarazo <duvan12385@gmail.com>
+Date:   Sat Nov 2 01:00:35 2019 -0500
+
+    Bullet system
+
+[33mcommit 30b41634dcbd15d526bf1e4331ea51b318176768[m
+Author: Duvan Lizarazo <duvan12385@gmail.com>
+Date:   Fri Nov 1 23:43:41 2019 -0500
+
+    Controller
+
+[33mcommit 8663c9b248f9bb0e68f20e53d835e36a0aba642a[m
+Author: Duvan Lizarazo <duvan12385@gmail.com>
+Date:   Fri Nov 1 20:51:41 2019 -0500
+
+    Initial Commint
+
+[33mcommit 1135fc9e988a5c57a0fb07c7267710c8c600fed0[m
+Author: Duvan Lizarazo <duvan12385@gmail.com>
+Date:   Fri Nov 1 19:48:04 2019 -0500
+
+    Initial commit
