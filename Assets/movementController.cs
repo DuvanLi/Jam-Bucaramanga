@@ -9,8 +9,8 @@ public class movementController : MonoBehaviour
     [SerializeField] private float speed;
     private float horizontal;
     private bool facingRigh;
-    private Animator animator;
-    private Rigidbody2D rb;
+    public Animator animator;
+    public Rigidbody2D rb;
     private bool jump;
     [SerializeField] private float offset;
     [SerializeField] private LayerMask whatisGround;
@@ -19,8 +19,13 @@ public class movementController : MonoBehaviour
 
     public void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+    }
+    void OnDisable()
+    {
+        horizontal = 0;
+        animator.SetBool("isRuning", false);
+        animator.StopPlayback();
+
     }
 
     void Update()
@@ -33,6 +38,9 @@ public class movementController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (rb.isKinematic)
+            animator.SetBool("isRuning", false);
+
         print("X Velocity: " + rb.velocity.x);
         //var xSpeed = rb.velocity.x + (horizontal * speed) * Time.deltaTime;
         //var targetVelocity = rb.velocity.x + (horizontal * speed) * Time.deltaTime;
@@ -51,22 +59,27 @@ public class movementController : MonoBehaviour
             facingRigh = !facingRigh;
         }
 
-        switch (horizontal)
+        if (horizontal == 0)
         {
-            case 0:
-                //rb.velocity = new Vector2((rb.velocity.x < 0) ? rb.velocity.x+Mathf.Abs(rb.velocity.x) :,rb.velocity.y)
-                rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, 5), rb.velocity.y);
-                animator.SetBool("isRuning", false);
-                break;
-            case 1:
-                rb.velocity = new Vector2(speed, rb.velocity.y);
-                animator.SetBool("isRuning", true);
-                break;
-            case -1:
-                rb.velocity = new Vector2(speed * -1, rb.velocity.y);
-                animator.SetBool("isRuning", true);
-                break;
+            //rb.velocity = new Vector2((rb.velocity.x < 0) ? rb.velocity.x+Mathf.Abs(rb.velocity.x) :,rb.velocity.y)
+            rb.velocity = new Vector2(Mathf.Lerp(rb.velocity.x, 0, 5), rb.velocity.y);
+            animator.SetBool("isRuning", false);
+        
         }
+
+        if (horizontal > 0)
+        {
+            rb.velocity = new Vector2(speed, rb.velocity.y);
+            animator.SetBool("isRuning", true);
+        }
+
+        if (horizontal < 0)
+        {
+
+            rb.velocity = new Vector2(speed * -1, rb.velocity.y);
+            animator.SetBool("isRuning", true);
+        }
+
 
 
         if (jump && !isjumping)

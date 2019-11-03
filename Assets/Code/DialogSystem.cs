@@ -10,8 +10,11 @@ public delegate void Finish();
 
 public class DialogSystem : MonoBehaviour
 {
+    public movementController controller;
     public Finish finish;
     [SerializeField] private TMP_Text text;
+    [SerializeField] private TMP_Text currTalker;
+
     [SerializeField] private Conversation firtsConversation;
     [SerializeField] private Option OptionA;
     [SerializeField] private Option OptionX;
@@ -23,8 +26,21 @@ public class DialogSystem : MonoBehaviour
     private bool _textHasOption;
     private bool _wait;
     private bool once;
+    public Transform targetPlayerPos;
 
-
+    void Awake()
+    {
+        this.gameObject.SetActive(  false);
+    }
+    void OnEnable()
+    {
+        controller.rb.velocity = Vector2.zero;
+        controller.enabled = false;
+    }
+    void OnDisable()
+    {
+        controller.enabled = true;
+    }
     private void Start()
     {
         finish += ConversationEnd;
@@ -103,7 +119,10 @@ public class DialogSystem : MonoBehaviour
     private void NextDialog(Dialog nextDialogName)
     {
         if (nextDialogName != null)
+        {
             DisplayDialog(nextDialogName.text);
+            currTalker.text = nextDialogName.name;
+        }
     }
 
     private void DisplayDialog(string dialog)
@@ -122,7 +141,7 @@ public class DialogSystem : MonoBehaviour
         if (!once)
         {
             once = true;
-            text.text = "";
+            text.text = ""+"";
             foreach (var letter in dialog)
             {
                 yield return new WaitForSeconds(typeSpeed);
