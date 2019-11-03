@@ -10,6 +10,8 @@ public delegate void Finish();
 
 public class DialogSystem : MonoBehaviour
 {
+
+    public AudioSource buttonSound;
     public movementController controller;
     public Finish finish;
     [SerializeField] private TMP_Text text;
@@ -26,11 +28,13 @@ public class DialogSystem : MonoBehaviour
     private bool _textHasOption;
     private bool _wait;
     private bool once;
+    private bool once2 =true;
+
     public Transform targetPlayerPos;
 
     void Awake()
     {
-        this.gameObject.SetActive(  false);
+        this.gameObject.SetActive(false);
     }
     void OnEnable()
     {
@@ -56,11 +60,8 @@ public class DialogSystem : MonoBehaviour
         {
             if (_currDialogFinish && !_conversationFinish)
             {
-                if (Input.GetButtonDown(OptionA.ButtonName))
-                {
-                    NextConversation();
-                    _currDialogFinish = false;
-                }
+                if(once2)
+                StartCoroutine(cooldown());
             }
 
             if (!_conversationFinish) return;
@@ -72,22 +73,24 @@ public class DialogSystem : MonoBehaviour
             {
                 InitConversation(OptionA.conversation);
                 _currDialogFinish = false;
+                buttonSound.Play();
             }
             else if (Input.GetButtonDown(ButtonExit))
             {
                 _currDialogFinish = false;
                 gameObject.SetActive(false);
+                buttonSound.Play();
             }
             else if (Input.GetButtonDown(OptionX.ButtonName))
             {
                 InitConversation(OptionX.conversation);
-
+                buttonSound.Play();
                 _currDialogFinish = false;
             }
             else if (Input.GetButtonDown(OptionY.ButtonName))
             {
                 InitConversation(OptionY.conversation);
-
+                buttonSound.Play();
                 _currDialogFinish = false;
             }
         }
@@ -129,7 +132,16 @@ public class DialogSystem : MonoBehaviour
     {
         StartCoroutine(Type(dialog, 0.05f));
     }
-
+    private IEnumerator cooldown()
+    {
+        once2 = false;
+        yield return new WaitForSeconds(2.5f);
+ 
+        buttonSound.Play();
+        NextConversation();
+        _currDialogFinish = false;
+        
+    }
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(3f);
@@ -141,7 +153,7 @@ public class DialogSystem : MonoBehaviour
         if (!once)
         {
             once = true;
-            text.text = ""+"";
+            text.text = "" + "";
             foreach (var letter in dialog)
             {
                 yield return new WaitForSeconds(typeSpeed);
@@ -149,6 +161,7 @@ public class DialogSystem : MonoBehaviour
             }
 
             once = false;
+            once2 = true;
             _currDialogFinish = true;
         }
     }

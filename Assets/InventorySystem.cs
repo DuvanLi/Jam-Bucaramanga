@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InvntorySystem : MonoBehaviour
+public class InventorySystem : MonoBehaviour
 {
-    [SerializeField] private Dictionary<int, Item> inventory;
+    
+   public static InventorySystem instance;
+   public Dictionary<int, Item> inventory;
 
+   
+   
     private const int slots = 3;
 
     public void addToInventory(Item item)
@@ -28,12 +32,4 @@ public class InvntorySystem : MonoBehaviour
                 inventory.Remove(i);
         }
     }
-}
-
-[CreateAssetMenu(fileName = "Item", menuName= "Jam/item")]
-public class Item : ScriptableObject
-{
-    public GameObject prefab;
-    public string name;
-    public Sprite image;
 }

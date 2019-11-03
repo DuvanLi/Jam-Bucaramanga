@@ -14,4 +14,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Boss.unity
     guid: ff03e0001de2fba419de672d8bc9a845
+  - enabled: 1
+    path: Assets/Scenes/2daVuelta.unity
+    guid: b02432a7dcb9e7a46b3bf7ec6e96dea6
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/Scenes/2dVueltaBossdasd.unity
+    guid: ca1a89a5dc0af014f8a9e159660b49f3
+  - enabled: 1
+    path: Assets/Scenes/2dVueltaBoss.unity
+    guid: b628d9a5af52a1b4a97520d4bef5815e
   m_configObjects: {}
